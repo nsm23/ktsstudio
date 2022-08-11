@@ -1,4 +1,4 @@
-from typing import TypeVar
+from typing import TypeVar, Dict, Any
 
 __all__ = (
     'flip_kv_vk',
@@ -23,7 +23,9 @@ def flip_kv_vk(d: dict[KT, KV]) -> dict[KV, KT]:
         'Москва': 'moscow',
     }
     """
-    raise NotImplementedError
+    key = d.keys()
+    val = d.values()
+    return dict(zip(val, key))
 
 
 def flip_kv_vk_safe(d: dict[KT, KV]) -> dict[KV, list[KT]]:
@@ -39,4 +41,7 @@ def flip_kv_vk_safe(d: dict[KT, KV]) -> dict[KV, list[KT]]:
         '+3': ['Москва', 'Санкт-Петербург'],
     }
     """
-    raise NotImplementedError
+    new_d = {}
+    for key, val in d.items():
+        new_d.setdefault(val, []).append(key)
+    return new_d

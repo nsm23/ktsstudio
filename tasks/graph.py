@@ -1,3 +1,4 @@
+from collections import deque
 from typing import Any
 
 __all__ = (
@@ -27,8 +28,26 @@ class Graph:
     def __init__(self, root: Node):
         self._root = root
 
-    def dfs(self) -> list[Node]:
-        raise NotImplementedError
+    def dfs(self):
+        result = []
+        stack = [self._root]
+        while len(stack):
+            tmp = stack.pop()
+            if not (tmp in result):
+                result.append(tmp)
+                for t in tmp.outbound[::-1]:
+                    stack.append(t)
+        return result
 
     def bfs(self) -> list[Node]:
-        raise NotImplementedError
+        result = []
+        q = deque()
+        q.append(self._root)
+        while len(q):
+            tmp = q.popleft()
+            if not (tmp in result):
+                result.append(tmp)
+                for t in tmp.outbound:
+                    q.append(t)
+
+        return result
